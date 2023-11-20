@@ -10,9 +10,14 @@ We  also shared the code and syntax used to generate the data and calculate the 
  - Third, _"Simulation_Study1"_ and _"Simulation_Study2"_ included one R file and one .rds file each. The R files compute the perfomance measures (Bias, RMSE, convergence rates,...) and return an .rds files that contain a list of table of results.  
 
 Note that instead of submitting one job per prior distribution, we had submitted severals sub-jobs per prior distribution in parallel. For example in the _"mod_aBSS_lasso"_ folder, instead of fixing the number of replication to ```
-M<-1:200``` and submit only one file, we submitted 10 jobs with one group of 20 replicates each. In that case, the first job had to deal with replicate 1 to 20, the second job with replicate 21 to 40, and so on. To do that, we wrote the following lines in file :
+M<-1:200``` and submit only one file, we submitted 10 jobs with one group of 20 replicates each. In that case, the first job had to deal with replicate 1 to 20, the second job with replicate 21 to 40, and so on. To do that, we wrote the following lines in file _"MSAR_absslasso_wv1.R"_:
 ```
   M_blocks <- 0:10*20
   M <- (M_blocks[1]+1):M_blocks[1+1] 
 ```
-This means that 
+After that, we built a new file called _"MSAR_absslasso_wv2.R"_ with the same as _"MSAR_absslasso_wv1.R"_ but with the lines:
+```
+  M_blocks <- 0:10*20
+  M <- (M_blocks[2]+1):M_blocks[2+1] 
+```
+We did the same operation until we reach the 200 replications. 
