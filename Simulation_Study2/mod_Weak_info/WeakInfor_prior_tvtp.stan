@@ -75,12 +75,12 @@ model {
   // Within-level
   rho ~ beta(1,1);
   alpha ~ normal(0,10);
-  sigma_e ~ cauchy(0,2.5); // This is equivalent to inv_gamma(16,4) for the variance, alternative ==> cauchy(0,2.5); 
+  sigma_e ~ cauchy(0,2.5); 
   
   // Between-level
   beta_0 ~ cauchy(0,5); 
   beta_x ~normal(0,1);
   beta_z~normal(0,1);
   beta_xz~normal(0,1);  
-  sigma_x ~ cauchy(0,2.5); // This is equivalent to inv_gamma(16,4) for the variance, alternative ==> inv_gamma(10,2);
+  sigma_x ~ cauchy(0,2.5); 
 }
