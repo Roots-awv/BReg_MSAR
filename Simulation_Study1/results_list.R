@@ -21,10 +21,6 @@ for(nz in nz_){
     for(t in T_){
       for(n in N_){
         for(pr in 1:length(prior_)){
-          #nz <- nz_[1]
-          #p<- P_[3]
-          #t<- T_[3]
-          #n<- N_[3]
           postmean_m<-Abs_Bias_m<-Rel_Bias_m<-MSE_m<-CIR_m<-NDR_m<-ESS400_m<-
             Prec400_m<-ESS1000_m<-Prec1000_m<-ESS100_m<-Prec100_m<-Rhat_m<-CVr_m<-
             posterior_ls<-vector('list',M)
@@ -112,7 +108,6 @@ for(nz in nz_){
             CVr[theta]<-mean(CVr_X[theta,])
           }
           ########### Output results
-          #rownames(posterior_ls[[1]])
           Table_res<- cbind(
             posterior_ls[[1]]['Theta'],
             postmean,
