@@ -6,5 +6,6 @@ Figures that could not be presented in the manuscript are included in the pdf do
 
 We  also shared the code and syntax used to generate the data and calculate the results. 
  - First, we added the folder _"Generated_Data"_ containing 2 Python files that allow us to generate the data in simulation study 1 and simulation study 2 , respectively.
- - Second, we added two folders _"Simulation_Study1"_ and _"Simulation_Study2"_. Each folder contains four subfolders:  . Each of these subfolders respectively corresponds to each of four prior distributions used in the manuscript. These subfolder contains a Stan file and a R file each. We also included a R file that compute the perfomance measures (Bias, RMSE, convergence rates,...)
+ - Second, we added two folders _"Simulation_Study1"_ and _"Simulation_Study2"_. Each folder contains four subfolders: _"mod_aBSS_lasso", "mod_B_lasso", "mod_Horseshoe", "mod_Weak_info"_ . Each of these subfolders respectively corresponds to each of four prior distributions used in the manuscript. They contain one Stan file and one R file each that were used to carry out the MCMC sampling across data conditions and replications.
+ - Third, _"Simulation_Study1"_ and _"Simulation_Study2"_ included one R file and one .rds file each. The R files compute the perfomance measures (Bias, RMSE, convergence rates,...) and return an .rds files that contain a list of table of results.  
 
