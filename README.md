@@ -1,1 +1,1 @@
-# BReg_MSAR
+# Bayesian Regularization DLVM
