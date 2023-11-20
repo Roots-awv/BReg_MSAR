@@ -13,7 +13,7 @@ nz_<-as.character(c(25,50))
 ##### aBSS Lasso Priors
 weakinfo.ls<-blasso.ls<-absslasso.ls<-horseshoe.ls<-list()
 folder<-c('mod_Weak_info','mod_B_lasso','mod_aBSS_lasso','mod_Horseshoe')
-prior_<-c('WeakInfor','Blasso','absslasso','Horseshoeplus')
+prior_<-c('WeakInfor','Blasso','absslasso','RegHS')
 M<-200
 ptm<-proc.time()
 for(nz in nz_){
