@@ -24,8 +24,6 @@ for (t in c(30,40,50,60,70)){
       for(m in 1:M){
         name_fl<-paste0("N",n,"_T",t,"_P",p,"_corr",corr_,"_var100",prior_[pr],'_prior_tvtp',"_rep",m)
         # True Theta
-        #remove.char<-paste0(prior_[pr],"_prior_rep\\d+")
-        #trash.char<-gsub(remove.char, "", name_fl)
         theta.csv<-read_csv("Theta_tvtp.csv")
         # Posterior
         posterior.csv<-read_csv(paste0(folder[pr],"/",name_fl,".csv"))
