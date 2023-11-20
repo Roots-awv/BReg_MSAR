@@ -12,15 +12,6 @@ def inv_logit(x):
   return 1/(1+np.exp(-x))
 
 def data_generation(N_dim,T_dim,P_dim,non_zero,var_effect):
-  ##### Dimension
-  # N_dim = 100
-  # T_dim = 50
-  # P_dim = 25
-  #### Parameters
-  #### L2
-  #### Covariance matrix
-  # var_effect =1
-  # non_zero = 0.25
   phi_corr = 0.3 
   phi_var = 1
   sigma_logit = np.pi/sqrt(3) 
@@ -39,19 +30,15 @@ def data_generation(N_dim,T_dim,P_dim,non_zero,var_effect):
   mu = np.array([0,3])
   ###### Between level
   X = rnd.multivariate_normal(np.zeros(P_dim),Phi_X,N_dim)
-  # (np.transpose(X) @ X)/N_dim  
   ## The variance of X @ beta eta_i is set to be equal to 30% of the variance of eta_i :
   sigma_u = 0.125 # sqrt(sigma_logit*(0.25/(1-0.25))-(beta_eta.T @ Phi_X @ beta_eta))
   eta_i =X @ beta_eta + rnd.normal(0,sigma_u,N_dim)
   Rsq = (beta_eta.T @ Phi_X @ beta_eta+sigma_u**2)/(beta_eta.T @ Phi_X @ beta_eta+sigma_u**2+sigma_logit**2)
-  Rsq
-  #(sigma_u**2 + np.var(X @ beta_eta))/(sigma_u**2 + np.var(X @ beta_eta)+sigma_logit)  
   ###### States (chains) and transition probabilities
   beta_0 = 3
   P00 = np.exp((eta_i+beta_0))/(1+np.exp(eta_i+beta_0)) 
   P01 = 1- P00
   np.std(np.log(P00/P01)) - sigma_logit
-  #np.exp(0.13326979)
   # Here, I assumed that once individuals move from 0 to 1 they would 
   # have a low probability of coming back i-e to move from 1 to 0
   P10 = np.full(N_dim,0.05) 
