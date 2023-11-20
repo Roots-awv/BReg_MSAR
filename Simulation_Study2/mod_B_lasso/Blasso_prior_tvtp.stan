@@ -83,7 +83,7 @@ model {
   // Within-level
   rho ~ beta(1,1);
   alpha ~ normal(0,10);
-  sigma_e ~ cauchy(0,2.5); // This is equivalent to inv_gamma(16,4) for the variance, alternative ==> cauchy(0,2.5); 
+  sigma_e ~ cauchy(0,2.5);  
   
   // Between-level
   beta_0 ~ cauchy(0,5); 
@@ -93,5 +93,5 @@ model {
   beta_xz ~ double_exponential(0,sigma_x/lambda_xz);
   lambda_z ~ cauchy(0,2.5);         
   beta_z ~ double_exponential(0,sigma_x/lambda_z);
-  sigma_x ~ cauchy(0,2.5); // This is equivalent to inv_gamma(16,4) for the variance, alternative ==> inv_gamma(10,2);
+  sigma_x ~ cauchy(0,2.5);  
 }
