@@ -15,11 +15,11 @@ M<-1:200``` and submit only one job, we submitted 10 smaller jobs with one group
   M_blocks <- 0:10*20
   M <- (M_blocks[1]+1):M_blocks[1+1] 
 ```
-After that, we built a new file called _"MSAR_absslasso_wv2.R"_ with the same as _"MSAR_absslasso_wv1.R"_ but with the lines:
+After that, we built a new file called _"MSAR_absslasso_wv2.R"_ with the same script as _"MSAR_absslasso_wv1.R"_ but with the lines:
 ```
   M_blocks <- 0:10*20
   M <- (M_blocks[2]+1):M_blocks[2+1] 
 ```
-We did the same operation until we reach the 200 replications. 
 
-
+We reiled on these divisions of tasks throughout these two simulation studies. 
+ 
