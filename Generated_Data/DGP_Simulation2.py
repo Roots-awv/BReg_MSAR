@@ -12,30 +12,16 @@ def inv_logit(x):
   return 1/(1+np.exp(-x))
 
 def data_generation(N_dim,T_dim,P_dim,phi_corr,var_effect):
-  ##### Dimension
-  #N_dim = 100
-  #T_dim = 70
-  #P_dim = 7
-  ##### Parameters
-  ## L2
-  ## Covariance matrix
-  #var_effect = 1
-  #phi_corr = 0.5 
   phi_var = 1
   Phi_corrX =  np.ones((P_dim,P_dim)) *phi_corr - np.eye(P_dim) * (phi_corr-phi_var) 
   Phi_X = Phi_corrX *var_effect
   sigma_logit = np.pi/sqrt(3) 
   ## Coefficients
-  #if (P_dim % 2) == 1: # if 1 odd number  
-  #  var_num = np.int(1 + P_dim/2)
-  #else:                # if 0 even number 
   var_num = np.int(P_dim/2)
   x_beta = [0.5,-0.5] * var_num
   x_beta = x_beta[:var_num]
   x_beta.extend([0]*(P_dim-var_num))
   beta_x = np.array(x_beta)
-  beta_x
-  # beta_0 = 2.5
   beta_z = 0.5
   z_beta = [0]*var_num
   z_b = ([0.5,-0.5]* (P_dim-var_num))
@@ -49,22 +35,9 @@ def data_generation(N_dim,T_dim,P_dim,phi_corr,var_effect):
   gamma = 0.5
   mu = np.array([0,3])
   ###### Covariates
-  #Phi_W = np.eye(P_dim + T_dim) 
-  #Phi_W[:P_dim, :P_dim] = Phi_X
-  #Phi_W[P_dim:, :P_dim]=Phi_W[:P_dim, P_dim:]=0
-  #W = rnd.multivariate_normal(np.zeros(P_dim+ T_dim),Phi_W,N_dim)  
-  #W[:,2].mean()
-  #X = W[:,:P_dim]
-  #X[:,1].mean()
-  #Z = W[:,P_dim:]
-  #Z[:,1].mean()
   X = rnd.multivariate_normal(np.zeros(P_dim),Phi_X,N_dim)
   Z = rnd.normal(0,var_effect,(N_dim,T_dim))  #phi_xz=[]
   cov_XZ = np.cov(X.T, Z.T)
-  #  mat_cov = np.cov(X[:,0],Z[:,t])
-  #  mat_cov = mat_cov[0,1]
-  #  phi_xz.append(mat_cov)
-  #phi_txz = - np.array(phi_xz)
   ###### States (chains) and transition probabilities
   # initialization 
   eta_fei = X @ beta_x  
@@ -72,10 +45,6 @@ def data_generation(N_dim,T_dim,P_dim,phi_corr,var_effect):
   cov_fesZ = np.cov(eta_fes.T, Z.T)
   # Transition matrix 
   beta_0 = 3 #- (eta_fes @ Z).mean()
-  beta_0
-  #(cov_XZ[P_dim:, :P_dim] @ beta_xz).sum()
-  cov_fesZ[P_dim:, :P_dim].sum()
-  (eta_fes @ Z).mean() - eta_fes.mean()**2 * Z.mean()**2
   sigma_ri = 0.125 # Var_fe * ((1-Rsq)/Rsq) - sigma_logit**2
   sigma_rs = 0
   eps_ri = rnd.normal(0,sigma_ri,(N_dim))
@@ -96,9 +65,7 @@ def data_generation(N_dim,T_dim,P_dim,phi_corr,var_effect):
       # have a low probability of coming back i-e to move from 1 to 0
       trans_Matrix[i,t,1,0] = 0.05#np.full(N_dim,0.05) 
       trans_Matrix[i,t,1,1] = 1 - trans_Matrix[i,t,1,0] 
-  #var_eta= sigma_ri**2+ beta_x.T @ Phi_X @ beta_x + beta_z**2 * var_effect + (cov_XZ[P_dim:, :P_dim] @ beta_xz).mean()  
   Rsq=(eta_p.var()+sigma_ri**2+sigma_rs**2)/(eta_p.var()+sigma_ri**2+sigma_rs**2+sigma_logit**2)
-  Rsq
   ## Creates transition matrix 
   # loop
   for i in range(N_dim) :
