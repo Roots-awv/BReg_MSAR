@@ -9,6 +9,10 @@ We  also shared the code and syntax used to generate the data and calculate the 
  - Second, we added two folders _"Simulation_Study1"_ and _"Simulation_Study2"_. Each folder contains four subfolders: _"mod_aBSS_lasso", "mod_B_lasso", "mod_Horseshoe", "mod_Weak_info"_ . Each of these subfolders respectively corresponds to each of four prior distributions used in the manuscript. They contain one Stan file and one R file each that were used to carry out the MCMC sampling across data conditions and replications.
  - Third, _"Simulation_Study1"_ and _"Simulation_Study2"_ included one R file and one .rds file each. The R files compute the perfomance measures (Bias, RMSE, convergence rates,...) and return an .rds files that contain a list of table of results.  
 
-Note that instead of submitting one job per prior distribution, we had submitted severals sub-jobs per prior distribution in parallel. For example in the _"mod_aBSS_lasso"_ folder, instead of fixing the number of replication to M<-1:200, we added the following lines:
+Note that instead of submitting one job per prior distribution, we had submitted severals sub-jobs per prior distribution in parallel. For example in the _"mod_aBSS_lasso"_ folder, instead of fixing the number of replication to ```r
+M<-1:200```, we added the following lines:
+```r
   M_blocks <- 0:10*20
   M <- (M_blocks[1]+1):M_blocks[1+1] 
+```
+w
