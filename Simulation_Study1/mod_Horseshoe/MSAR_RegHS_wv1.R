@@ -36,7 +36,7 @@ for (n_dim in c(50,75,100)){
           # parameters
           pars = c('alpha','rho','sigma_e','beta_eta','beta_0','sigma_u')
           # Stan sampling
-          p_var <- stan_model("Horseshoeplus_prior.stan")
+          p_var <- stan_model("RegHS_prior_prior.stan")
           estimates <- sampling(p_var, data = mod_data,chains = 4 ,iter = 2000,pars = pars,seed = 111122)
           # Estimates
           est_chains = summary(estimates,pars, probs = c(0.025, 0.975))  
@@ -44,7 +44,7 @@ for (n_dim in c(50,75,100)){
           remove_<-paste0('M[',as.character(1:n_dim),',2]')
           posterior<-posterior_0[!rownames(posterior_0) %in% remove_,]
           
-          write.csv(posterior,file=paste0(nom,'Horseshoeplus_prior_rep',m,'.csv'))            
+          write.csv(posterior,file=paste0(nom,'RegHS_prior_prior_rep',m,'.csv'))            
         }
       }
     }
