@@ -2,7 +2,7 @@
 
 This repository contains supplementary materials and codes used in the manuscript titled: _"Are Bayesian Regularization Methods a Must for Multilevel Dynamic Latent Variables Models?"_
 
-Figures that was not presented in the manuscript were included in the pdf document entitled _"supplementary_materials.pdf"_.  In particular, convergence rates and sampling accuracy rates were presented. In addition, we presented measures such as relative bias, absolute bias, root mean square error (RMSE), coverage rates and type I error rates.
+Figures that was not presented in the manuscript were included in the pdf document entitled _"supplementary_materials.pdf"_.  In particular, convergence rates and sampling accuracy rates were presented. In addition, we presented measures such as relative bias, absolute bias, root mean square error (RMSE), power rates and type I error rates.
 
 We also shared the code and syntax used to generate the data and calculate the results. 
  - First, the _"Generated_Data"_ folder contains 2 Python files that allowed us to generate the data in simulation study 1 and simulation study 2 , respectively.
@@ -21,5 +21,5 @@ After that, we created a new file called _"MSAR_absslasso_wv2.R"_ with the same 
   M_blocks <- 0:10*20
   M <- (M_blocks[2]+1):M_blocks[2+1] 
 ```
-We relied on these divisions of tasks throughout these two simulation studies. 
+We relied on these divisions of tasks throughout the two simulation studies. 
  
