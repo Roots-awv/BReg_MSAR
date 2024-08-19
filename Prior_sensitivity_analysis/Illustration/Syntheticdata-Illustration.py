@@ -9,8 +9,7 @@ from numpy.linalg import inv
 # To generate the syntetic data we built the data_generation() function. Missing data  
 # were included to mimic the situation we dealt with the empirical data.
 
-
-############################## SIMULATION ##############################
+############################## Sy ##############################
 rnd.seed(171122)
 ##### Functions
 def inv_logit(x):
@@ -143,6 +142,11 @@ X_data = data["X"]
 X_evt = data["X_evt"]
 
 #### Splitting missing and observed data 
+# Since Stan does not accept nan value, we need to replace them with placeholders (-99 in our case).
+# Meanwhile, we also identify where those nan value are located. Once we obtain their coordinate, we 
+# introduce them into Stan and assign to these placeholders priors (the same distribution as the observed 
+# data).  
+
 ## Withing level data
 # Missing data
 y_miss = np.argwhere(np.isnan(Y_data))
