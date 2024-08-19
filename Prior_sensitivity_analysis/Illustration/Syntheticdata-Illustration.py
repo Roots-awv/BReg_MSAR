@@ -4,6 +4,12 @@ import pandas as pd
 import quantecon as qe
 from numpy.linalg import inv
 
+# The syntax contains two parts: the first part consists in generating the data and
+# the second involves estimation with cmdstanpy.
+# To generate the syntetic data we built the data_generation() function. Missing data  
+# were included to mimic the situation we dealt with the empirical data.
+
+
 ############################## SIMULATION ##############################
 rnd.seed(171122)
 ##### Functions
