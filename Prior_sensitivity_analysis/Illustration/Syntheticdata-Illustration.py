@@ -9,7 +9,10 @@ from numpy.linalg import inv
 # To generate the syntetic data we built the data_generation() function. Missing data  
 # were included to mimic the situation we dealt with the empirical data.
 
-############################## Sy ##############################
+##########################################################################################
+############################## Synthetic data ############################################
+##########################################################################################
+
 rnd.seed(171122)
 ##### Functions
 def inv_logit(x):
@@ -127,8 +130,6 @@ def data_generation(N_dim,T_dim,K_dim):
 
   return {'N':N_dim, 'T':T_dim, 'Y':Y, 'X':X,'X_evt':X_evt} 
 
-##### Conditions
-rep  = 0 
 #### Simulation
 n_dim,t_dim,k_dim=[122,50,3]
 data=data_generation(n_dim,t_dim,k_dim)
@@ -164,19 +165,31 @@ x_miss3 = x_miss[2,0]
 
 X_data[np.isnan(X_data)] = -99
 
-############################## NUTS-HMC Estimation with cmdstan ##############################
+##########################################################################################
+############################## NUTS-HMC Estimation with cmdstan ##########################
+##########################################################################################
 from cmdstanpy.model import CmdStanModel
 import arviz as az
 import os
 
-os.environ['STAN_NUM_THREADS'] = '16'
+# Now, we estimate the models using the NUTS-HMC implemented in cmdstan. 
+# Note that we originally aim to compare regularization methods.
+# To do so, we specify the "methods" variable to be the name of the 
+# regularization methods we want to use.
 
 methods = 'Ridge-0' #['Ridge-0','Ridge-1',
                     # 'B-lasso',
                     # 'ABSS-lasso-0','ABSS-lasso-1','ABSS-lasso-2',
                     # 'regHS-0','regHS-1','regHS-2']
 
-# Prepare data dictionary for stan
+## Prepare data dictionary for stan
+# Here we gather the all information aout the data we want to transfer into stan
+# Note that we need to specify the scale parameter for the reg. HS priors 
+# that we denote by sigma_s. Following the description in table 5 in the manuscript,  
+# the NDLCSEM_data dictionary need to include:
+#            - 'sigma_s':np.pi/np.sqrt(3*n_dim*t_dim) for reg. HS-0 and reg. HS-1
+#            - 'sigma_s':2/np.sqrt(n_dim*t_dim) for reg. HS-2
+
 NDLCSEM_data = {
   'N':n_dim, 'T':t_dim, 
   'y':Y_data, 
@@ -193,8 +206,7 @@ NDLCSEM_data = {
 
 # Launch stan
 cmd_stanmodel = CmdStanModel(
-  stan_file=methods+'.stan',
-  cpp_options={'STAN_THREADS': 'TRUE'})
+  stan_file=methods+'.stan')
 vi_init = cmd_stanmodel.variational(
     data=NDLCSEM_data, 
     require_converged=False,
@@ -206,16 +218,12 @@ n_chains,n_samples,n_warmups=[4,2000,2000]
 init_dict = {var: samples.mean(axis=0) for var, samples in vi_init.stan_variables(mean=False).items()}
 init_chains= [init_dict for _ in range(n_chains)]
 
-# NUTS-HMC sampling
+# NUTS-HMC sampling with NUTS-HMC
 post_sample = cmd_stanmodel.sample(
   data=NDLCSEM_data,chains=n_chains,iter_warmup=n_warmups,iter_sampling=n_samples,
   inits=init_chains,seed=60424,show_progress=True) 
 
-# Note that for the aBSS-lasso priors, add the following options: adapt_delta=0.999 and step_size=0.001 
-# As explained in the manuscript adjusting the accepatance ratio and the initial step size is required
-# For the the aBSS-lasso priors
-
-# convert pystan to arviz
+# convert cmdstanpy to arviz 
 fit_az = az.from_cmdstanpy(
       posterior=post_sample,observed_data={'y':NDLCSEM_data['y'],'X':NDLCSEM_data['X']},
       log_likelihood="Lkd_MSAR",
@@ -234,6 +242,7 @@ fit_az = az.from_cmdstanpy(
       'beta_0': ["chain","draw"],
       'beta_': ["chain","draw","var12"]})
 
+# Variable names
 var_names = ['loady','sigma_y',
             'alpha_','B_',
             'tau_e','L_e',
@@ -241,12 +250,14 @@ var_names = ['loady','sigma_y',
             'sigma_u',
             'beta_0','beta_'] 
 
+# additional functions
 func_dict = {
-  "mode": lambda x: np.max(x),
-  "5%":lambda x: np.percentile(x,5),
+  "mode": lambda x: np.max(x),        
+  "5%":lambda x: np.percentile(x,5),  
   "95%":lambda x: np.percentile(x,95),
 }
 
+# Results
 results_fit_az = az.summary(fit_az, var_names=var_names,stat_funcs=func_dict)
 results_fit_df = pd.DataFrame(results_fit_az)
 results_fit_df.to_csv(methods+" results.csv")
