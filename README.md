@@ -1,4 +1,4 @@
-# Bayesian Regularization DLVM
+# Are Bayesian Regularization Methods a Must for Multilevel Dynamic Latent Variables Models?
 
 This repository contains supplementary materials and codes used in the manuscript titled: _"Are Bayesian Regularization Methods a Must for Multilevel Dynamic Latent Variables Models?"_
 
